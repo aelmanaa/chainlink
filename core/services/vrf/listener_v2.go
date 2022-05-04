@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"math"
 	"math/big"
+	"sort"
 	"strings"
 	"sync"
 	"time"
@@ -412,7 +413,14 @@ func (lsn *listenerV2) shouldProcessSub(subID uint64, sub vrf_coordinator_v2.Get
 		return false
 	}
 
-	vrfRequest := reqs[0].req
+	// sort requests in ascending order by CallbackGasLimit
+	sortedReqs := make([]pendingRequest, len(reqs))
+	copy(sortedReqs, reqs)
+	sort.Slice(sortedReqs, func(a, b int) bool {
+		return sortedReqs[a].req.CallbackGasLimit < sortedReqs[b].req.CallbackGasLimit
+	})
+
+	vrfRequest := sortedReqs[0].req
 	l := lsn.l.With(
 		"subID", subID,
 		"balance", sub.Balance,
@@ -431,7 +439,7 @@ func (lsn *listenerV2) shouldProcessSub(subID uint64, sub vrf_coordinator_v2.Get
 
 	gasPriceWei := lsn.cfg.KeySpecificMaxGasPriceWei(fromAddress)
 
-	estimatedFee, err := lsn.estimateFeeJuels(reqs[0].req, gasPriceWei)
+	estimatedFee, err := lsn.estimateFeeJuels(sortedReqs[0].req, gasPriceWei)
 	if err != nil {
 		l.Warnw("Couldn't estimate fee, processing sub anyway", "err", err)
 		return true
