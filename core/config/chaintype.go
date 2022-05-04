@@ -7,6 +7,7 @@ type ChainType string
 const (
 	ChainArbitrum ChainType = "arbitrum"
 	ChainExChain  ChainType = "exchain"
+	ChainMetis    ChainType = "metis"
 	ChainOptimism ChainType = "optimism"
 	ChainXDai     ChainType = "xdai"
 )
@@ -14,7 +15,7 @@ const (
 // IsValid returns true if the ChainType value is known or empty.
 func (c ChainType) IsValid() bool {
 	switch c {
-	case "", ChainArbitrum, ChainExChain, ChainOptimism, ChainXDai:
+	case "", ChainArbitrum, ChainExChain, ChainMetis, ChainOptimism, ChainXDai:
 		return true
 	}
 	return false
@@ -24,7 +25,7 @@ func (c ChainType) IsValid() bool {
 // used for log searching are different from calling block.number
 func (c ChainType) IsL2() bool {
 	switch c {
-	case ChainArbitrum, ChainOptimism:
+	case ChainArbitrum, ChainMetis, ChainOptimism:
 		return true
 
 	case ChainXDai, ChainExChain:

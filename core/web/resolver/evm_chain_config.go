@@ -18,6 +18,7 @@ type ChainType string
 const (
 	ChainTypeArbitrum ChainType = "ARBITRUM"
 	ChainTypeExChain  ChainType = "EXCHAIN"
+	ChainTypeMetis    ChainType = "METIS"
 	ChainTypeOptimism ChainType = "OPTIMISM"
 	ChainTypeXDAI     ChainType = "XDAI"
 )
@@ -28,6 +29,8 @@ func ToChainType(s string) (ChainType, error) {
 		return ChainTypeArbitrum, nil
 	case "exchain":
 		return ChainTypeExChain, nil
+	case "metis":
+		return ChainTypeMetis, nil
 	case "optimism":
 		return ChainTypeOptimism, nil
 	case "xdai":
@@ -43,6 +46,8 @@ func FromChainType(ct ChainType) string {
 		return "arbitrum"
 	case ChainTypeExChain:
 		return "exchain"
+	case ChainTypeMetis:
+		return "metis"
 	case ChainTypeOptimism:
 		return "optimism"
 	case ChainTypeXDAI:
@@ -59,6 +64,7 @@ const (
 	GasEstimatorModeFixedPrice   GasEstimatorMode = "FIXED_PRICE"
 	GasEstimatorModeOptimism     GasEstimatorMode = "OPTIMISM"
 	GasEstimatorModeOptimism2    GasEstimatorMode = "OPTIMISM2"
+	GasEstimatorModeL2Suggested  GasEstimatorMode = "L2_SUGGESTED"
 )
 
 func ToGasEstimatorMode(s string) (GasEstimatorMode, error) {
@@ -71,6 +77,8 @@ func ToGasEstimatorMode(s string) (GasEstimatorMode, error) {
 		return GasEstimatorModeOptimism, nil
 	case "Optimism2":
 		return GasEstimatorModeOptimism2, nil
+	case "L2Suggested":
+		return GasEstimatorModeL2Suggested, nil
 	default:
 		return "", errors.New("invalid gas estimator mode")
 	}
@@ -86,6 +94,8 @@ func FromGasEstimatorMode(gsm GasEstimatorMode) string {
 		return "Optimism"
 	case GasEstimatorModeOptimism2:
 		return "Optimism2"
+	case GasEstimatorModeL2Suggested:
+		return "L2Suggested"
 	default:
 		return strings.ToLower(string(gsm))
 	}
